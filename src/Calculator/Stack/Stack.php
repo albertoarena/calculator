@@ -46,4 +46,15 @@ class Stack
     {
         $this->stack = array();
     }
+
+    /**
+     * @return mixed|null
+     */
+    public function current()
+    {
+        if ($c = count($this->stack)) {
+            return $this->stack[$c - 1];
+        }
+        return null;
+    }
 } 

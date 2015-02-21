@@ -1,0 +1,21 @@
+{
+    "name": "albertoarena/calculator",
+    "description": "Simple calculator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alberto Arena",
+            "email": "arena.alberto@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0",
+        "phpunit/phpunit": "~4.7@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Calculator": "src/"
+        }
+    }
+}

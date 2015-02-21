@@ -13,6 +13,14 @@ class Subtract extends Operator
     }
 
     /**
+     * @return int
+     */
+    public function getPrecedence()
+    {
+        return self::PRECEDENCE_LOWER;
+    }
+
+    /**
      * @param float|int $value1
      * @param float|int $value2
      * @return float|int

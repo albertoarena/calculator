@@ -19,6 +19,11 @@ class SubtractTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('-', $this->operator->getOperator());
     }
 
+    public function testPrecedence()
+    {
+        $this->assertEquals(Operator::PRECEDENCE_LOWER, $this->operator->getPrecedence());
+    }
+
     public function testExecute()
     {
         $this->assertEquals(7, $this->operator->execute(10, 3));

@@ -4,10 +4,22 @@ namespace Calculator\Operator;
 
 abstract class Operator
 {
+
+    /** @internal higher precedence */
+    const PRECEDENCE_HIGHER = 2;
+
+    /** @internal lower precedence */
+    const PRECEDENCE_LOWER = 1;
+
     /**
      * @return string
      */
     abstract public function getOperator();
+
+    /**
+     * @return int
+     */
+    abstract public function getPrecedence();
 
     /**
      * @param float|int $value1

@@ -19,6 +19,11 @@ class DivideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/', $this->operator->getOperator());
     }
 
+    public function testPrecedence()
+    {
+        $this->assertEquals(Operator::PRECEDENCE_HIGHER, $this->operator->getPrecedence());
+    }
+
     public function testExecute()
     {
         $this->assertEquals(4, $this->operator->execute(12, 3));

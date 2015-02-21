@@ -13,6 +13,14 @@ class Divide extends Operator
     }
 
     /**
+     * @return int
+     */
+    public function getPrecedence()
+    {
+        return self::PRECEDENCE_HIGHER;
+    }
+
+    /**
      * @param float|int $value1
      * @param float|int $value2
      * @return float|int

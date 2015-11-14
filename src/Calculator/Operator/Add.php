@@ -17,7 +17,7 @@ class Add extends Operator
      */
     public function getPrecedence()
     {
-        return self::PRECEDENCE_LOWER;
+        return self::PRECEDENCE_LOW;
     }
 
     /**

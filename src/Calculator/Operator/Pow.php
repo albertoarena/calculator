@@ -2,14 +2,14 @@
 namespace Calculator\Operator;
 
 
-class Divide extends Operator
+class Pow extends Operator
 {
     /**
      * @return string
      */
     public function getOperator()
     {
-        return '/';
+        return '^';
     }
 
     /**
@@ -17,7 +17,7 @@ class Divide extends Operator
      */
     public function getPrecedence()
     {
-        return self::PRECEDENCE_MEDIUM;
+        return self::PRECEDENCE_HIGH;
     }
 
     /**
@@ -27,6 +27,6 @@ class Divide extends Operator
      */
     public function execute($value1, $value2)
     {
-        return $value1 / $value2;
+        return pow($value1, $value2);
     }
 }

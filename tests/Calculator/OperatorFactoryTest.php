@@ -17,11 +17,14 @@ class OperatorFactoryTest extends \PHPUnit_Framework_TestCase
 
         $operator = OperatorFactory::createOperator('/');
         $this->assertInstanceOf('Calculator\Operator\Divide', $operator);
+
+        $operator = OperatorFactory::createOperator('^');
+        $this->assertInstanceOf('Calculator\Operator\Pow', $operator);
     }
 
     public function testInvalidConstruct()
     {
         $this->setExpectedException('\Exception', 'Invalid operator');
-        OperatorFactory::createOperator('^');
+        OperatorFactory::createOperator('£');
     }
 }

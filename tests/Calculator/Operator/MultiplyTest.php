@@ -21,7 +21,7 @@ class MultiplyTest extends \PHPUnit_Framework_TestCase
 
     public function testPrecedence()
     {
-        $this->assertEquals(Operator::PRECEDENCE_HIGHER, $this->operator->getPrecedence());
+        $this->assertEquals(Operator::PRECEDENCE_MEDIUM, $this->operator->getPrecedence());
     }
 
     public function testExecute()

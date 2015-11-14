@@ -17,7 +17,7 @@ class Multiply extends Operator
      */
     public function getPrecedence()
     {
-        return self::PRECEDENCE_HIGHER;
+        return self::PRECEDENCE_MEDIUM;
     }
 
     /**

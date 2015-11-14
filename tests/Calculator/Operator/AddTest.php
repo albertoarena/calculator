@@ -21,7 +21,7 @@ class AddTest extends \PHPUnit_Framework_TestCase
 
     public function testPrecedence()
     {
-        $this->assertEquals(Operator::PRECEDENCE_LOWER, $this->operator->getPrecedence());
+        $this->assertEquals(Operator::PRECEDENCE_LOW, $this->operator->getPrecedence());
     }
 
     public function testExecute()

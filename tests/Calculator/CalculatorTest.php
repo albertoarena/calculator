@@ -46,6 +46,14 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(9.29, $this->calculator->execute());
     }
 
+    public function testCalculatorPow()
+    {
+        $this->calculator->number(2)
+            ->operator('*')->number(2)
+            ->operator('^')->number(4);
+        $this->assertEquals(32, $this->calculator->execute());
+    }
+
     public function testCalculateEmpty()
     {
         $this->assertEquals(0, $this->calculator->execute());

@@ -6,10 +6,13 @@ abstract class Operator
 {
 
     /** @internal higher precedence */
-    const PRECEDENCE_HIGHER = 2;
+    const PRECEDENCE_HIGH = 3;
+
+    /** @internal higher precedence */
+    const PRECEDENCE_MEDIUM = 2;
 
     /** @internal lower precedence */
-    const PRECEDENCE_LOWER = 1;
+    const PRECEDENCE_LOW = 1;
 
     /**
      * @return string

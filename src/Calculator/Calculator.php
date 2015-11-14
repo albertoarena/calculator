@@ -122,6 +122,8 @@ class Calculator
      */
     public function __toString()
     {
-        return implode(' ', $this->asString);
+        $ret = implode(' ', $this->asString);
+        $this->asString = array();
+        return $ret;
     }
 }

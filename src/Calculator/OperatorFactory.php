@@ -9,6 +9,7 @@ class OperatorFactory
         '-' => 'Calculator\Operator\Subtract',
         '*' => 'Calculator\Operator\Multiply',
         '/' => 'Calculator\Operator\Divide',
+        '^' => 'Calculator\Operator\Pow',
     );
 
     public static function createOperator($operator)

@@ -28,4 +28,9 @@ class DivideTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(4, $this->operator->execute(12, 3));
     }
+
+    public function testToString()
+    {
+        $this->assertEquals("/", (string) $this->operator);
+    }
 } 

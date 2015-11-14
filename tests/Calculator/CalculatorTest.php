@@ -50,4 +50,14 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(0, $this->calculator->execute());
     }
+
+    public function testToString()
+    {
+        $this->calculator->number(1)
+            ->operator('+')->number(1)
+            ->operator('*')->number(3)
+            ->operator('+')->number(3)
+            ->execute();
+        $this->assertEquals("1 + 1 * 3 + 3 = 7", (string) $this->calculator);
+    }
 }

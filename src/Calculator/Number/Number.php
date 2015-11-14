@@ -22,4 +22,12 @@ class Number
     {
         return $this->value;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->value;
+    }
 }

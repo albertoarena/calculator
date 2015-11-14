@@ -10,4 +10,10 @@ class NumberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(123, $n->getValue());
     }
 
+    public function testToString()
+    {
+        $n = new Number(123);
+        $this->assertEquals("123", (string) $n);
+    }
+
 } 

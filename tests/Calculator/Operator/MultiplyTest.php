@@ -28,4 +28,9 @@ class MultiplyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(10, $this->operator->execute(5, 2));
     }
+
+    public function testToString()
+    {
+        $this->assertEquals("*", (string) $this->operator);
+    }
 } 

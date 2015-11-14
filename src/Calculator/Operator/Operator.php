@@ -2,7 +2,9 @@
 namespace Calculator\Operator;
 
 
-abstract class Operator
+use Calculator\Entity;
+
+abstract class Operator extends Entity
 {
 
     /** @internal higher precedence */
@@ -30,6 +32,14 @@ abstract class Operator
      * @return float|int
      */
     abstract public function execute($value1, $value2);
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'operator';
+    }
 
     /**
      * @return string

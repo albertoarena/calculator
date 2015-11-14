@@ -10,6 +10,8 @@ class OperatorFactory
         '*' => 'Calculator\Operator\Multiply',
         '/' => 'Calculator\Operator\Divide',
         '^' => 'Calculator\Operator\Pow',
+        '√' => 'Calculator\Operator\SquareRoot',
+        'sqrt' => 'Calculator\Operator\SquareRoot', // alias for square root
     );
 
     public static function createOperator($operator)

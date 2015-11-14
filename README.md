@@ -13,6 +13,7 @@ The Order of operators follows the standard (see [Wikipedia](https://en.wikipedi
 High precedence
 
 - `^`: exponent (power)
+- `√`: square root (alias `sqrt`)
 
 Medium precedence
 
@@ -50,5 +51,12 @@ $calculator->number(2)
 
 echo $calculator;
 // ==> 2 * 2 ^ 4 = 32
+
+$result = $calculator->number(9)
+    ->operator('√')
+    ->execute();
+
+echo $calculator;
+// ==> √ 9 = 3
 
 ```

@@ -2,7 +2,9 @@
 namespace Calculator\Number;
 
 
-class Number
+use Calculator\Entity;
+
+class Number extends Entity
 {
     /** @var float|int */
     protected $value;
@@ -13,6 +15,14 @@ class Number
     public function __construct($value)
     {
         $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'number';
     }
 
     /**

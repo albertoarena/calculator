@@ -3,17 +3,28 @@ namespace Calculator\Number;
 
 class NumberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Number
+     */
+    protected $number;
+
+    public function assertPreConditions()
+    {
+        $this->number = new Number(123);
+    }
 
     public function testConstruct()
     {
-        $n = new Number(123);
-        $this->assertEquals(123, $n->getValue());
+        $this->assertEquals(123, $this->number->getValue());
     }
 
     public function testToString()
     {
-        $n = new Number(123);
-        $this->assertEquals("123", (string) $n);
+        $this->assertEquals("123", (string) $this->number);
     }
 
+    public function testGetType()
+    {
+        $this->assertEquals('number', $this->number->getType());
+    }
 } 

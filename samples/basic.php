@@ -27,3 +27,10 @@ $result = $calculator->number(2)
 
 echo 'Result: ' . $result . $cr;
 echo 'Full operation: ' . $calculator . $cr;
+
+$result = $calculator->number(9)
+    ->operator('√')
+    ->execute();
+
+echo 'Result: ' . $result . $cr;
+echo 'Full operation: ' . $calculator . $cr;

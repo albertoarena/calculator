@@ -27,4 +27,13 @@ abstract class Operator
      * @return float|int
      */
     abstract public function execute($value1, $value2);
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getOperator();
+    }
+
 }

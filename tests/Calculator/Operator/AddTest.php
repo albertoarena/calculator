@@ -28,4 +28,9 @@ class AddTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(5, $this->operator->execute(2, 3));
     }
+
+    public function testToString()
+    {
+        $this->assertEquals("+", (string) $this->operator);
+    }
 } 

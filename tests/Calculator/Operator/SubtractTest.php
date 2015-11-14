@@ -28,4 +28,9 @@ class SubtractTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(7, $this->operator->execute(10, 3));
     }
+
+    public function testToString()
+    {
+        $this->assertEquals("-", (string) $this->operator);
+    }
 } 

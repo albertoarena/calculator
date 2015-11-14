@@ -21,10 +21,14 @@ class Calculator
     /** @var \Calculator\Stack\Stack */
     protected $operators;
 
+    /** @var array */
+    protected $asString;
+
     public function __construct()
     {
         $this->output = new Stack();
         $this->operators = new Stack();
+        $this->asString = array();
     }
 
     /**
@@ -32,43 +36,35 @@ class Calculator
      */
     protected function process($item)
     {
-        switch (true)
-        {
-            case $item instanceof Operator:
-                // Get the latest operator in stack
-                $lastInStack = $this->operators->current();
+        if ($item instanceof Operator) {
+            $this->asString[] = $item;
 
-                if (!is_null($lastInStack)) {
+            // Get the latest operator in stack
+            $lastInStack = $this->operators->current();
 
-                    // Check precedence
-                    if ($item->getPrecedence() > $lastInStack->getPrecedence()) {
-                        // Push current operator
-                        $this->operators->push($item);
-                    }
-                    else {
-                        // Process latest operator in stack
-                        $value2 = $this->output->pop()->getValue();
-                        $value1 = $this->output->pop()->getValue();
-                        $this->output->push(new Number($lastInStack->execute($value1, $value2)));
-                        // Pop last operator
-                        $this->operators->pop();
-                        // Push current operator
-                        $this->operators->push($item);
-                    }
-                }
-                else {
-                    // Empty stack, push current operator
+            if (!is_null($lastInStack)) {
+
+                // Check precedence
+                if ($item->getPrecedence() > $lastInStack->getPrecedence()) {
+                    // Push current operator
+                    $this->operators->push($item);
+                } else {
+                    // Process latest operator in stack
+                    $value2 = $this->output->pop()->getValue();
+                    $value1 = $this->output->pop()->getValue();
+                    $this->output->push(new Number($lastInStack->execute($value1, $value2)));
+                    // Pop last operator
+                    $this->operators->pop();
+                    // Push current operator
                     $this->operators->push($item);
                 }
-                break;
-
-            case $item instanceof Number:
-                $this->output->push($item);
-                break;
-
-            default:
-                // Never occurs
-                break;
+            } else {
+                // Empty stack, push current operator
+                $this->operators->push($item);
+            }
+        } else if ($item instanceof Number) {
+            $this->asString[] = $item;
+            $this->output->push($item);
         }
     }
 
@@ -93,7 +89,7 @@ class Calculator
     }
 
     /**
-     * @param int $number
+     * @param int|float $number
      * @return $this
      */
     public function number($number)
@@ -102,14 +98,30 @@ class Calculator
         return $this;
     }
 
+    /**
+     * Execute calculation
+     * @return int|float
+     */
     public function execute()
     {
         $this->finaliseProcess();
 
+        $result = 0;
         if ($this->output->count()) {
-            return $this->output->pop()->getValue();
-        } else {
-            return 0;
+            $result = $this->output->pop()->getValue();
         }
+
+        $this->asString[] = '=';
+        $this->asString[] = $result;
+
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode(' ', $this->asString);
     }
 }

@@ -3,6 +3,7 @@ namespace Calculator;
 
 
 use Calculator\Number\Number;
+use Calculator\Number\Result;
 use Calculator\Operator\Operator;
 use Calculator\Stack\Stack;
 
@@ -21,23 +22,46 @@ class Calculator
     /** @var \Calculator\Stack\Stack */
     protected $operators;
 
-    /** @var array */
-    protected $asString;
+    /** @var \Calculator\Stack\Stack */
+    protected $queue;
 
     public function __construct()
     {
         $this->output = new Stack();
         $this->operators = new Stack();
-        $this->asString = array();
+        $this->queue = new Stack();
     }
 
     /**
-     * @param $item
+     * @param Entity $item
+     */
+    protected function addToQueue($item)
+    {
+        if ($item instanceof Entity) {
+            $this->queue->push($item);
+        }
+    }
+
+    /**
+     * @return Entity|null
+     */
+    protected function getNextValue()
+    {
+        if ($this->output->current() !== null) {
+            return $this->output->pop()->getValue();
+        }
+        return null;
+    }
+
+    /**
+     * Process stack
+     *
+     * @param Entity $item
      */
     protected function process($item)
     {
+        $this->addToQueue($item);
         if ($item instanceof Operator) {
-            $this->asString[] = $item;
 
             // Get the latest operator in stack
             $lastInStack = $this->operators->current();
@@ -50,8 +74,8 @@ class Calculator
                     $this->operators->push($item);
                 } else {
                     // Process latest operator in stack
-                    $value2 = $this->output->pop()->getValue();
-                    $value1 = $this->output->pop()->getValue();
+                    $value2 = $this->getNextValue();
+                    $value1 = $this->getNextValue();
                     $this->output->push(new Number($lastInStack->execute($value1, $value2)));
                     // Pop last operator
                     $this->operators->pop();
@@ -63,17 +87,20 @@ class Calculator
                 $this->operators->push($item);
             }
         } else if ($item instanceof Number) {
-            $this->asString[] = $item;
             $this->output->push($item);
         }
     }
 
+    /**
+     * Finalise process of stack
+     */
     protected function finaliseProcess()
     {
         // Reduce operators in stack
         while ($this->operators->count()) {
-            $value2 = $this->output->pop()->getValue();
-            $value1 = $this->output->pop()->getValue();
+            // Process latest operator in stack
+            $value2 = $this->getNextValue();
+            $value1 = $this->getNextValue();
             $this->output->push(new Number($this->operators->pop()->execute($value1, $value2)));
         }
     }
@@ -109,10 +136,10 @@ class Calculator
         $result = 0;
         if ($this->output->count()) {
             $result = $this->output->pop()->getValue();
-        }
 
-        $this->asString[] = '=';
-        $this->asString[] = $result;
+            // Total added to queue
+            $this->queue->push(new Result($result));
+        }
 
         return $result;
     }
@@ -122,8 +149,22 @@ class Calculator
      */
     public function __toString()
     {
-        $ret = implode(' ', $this->asString);
-        $this->asString = array();
+        // Normalise operators with inverted string order
+        $queue = array();
+        while ($this->queue->count()) {
+            $item = $this->queue->shift();
+            $queue[] = $item;
+            $index = count($queue) - 1;
+            if (is_object($item) && $item->getStringOrder() < 0 && $index > 0) {
+                // swap with previous item
+                $v = $queue[$index - 1];
+                $queue[$index - 1] = $item;
+                $queue[$index] = $v;
+            }
+        }
+
+        $ret = implode(' ', $queue);
+        $this->queue->reset();
         return $ret;
     }
 }

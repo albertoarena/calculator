@@ -54,7 +54,21 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(32, $this->calculator->execute());
     }
 
-    public function testCalculateEmpty()
+    public function testCalculatorSquareRoot()
+    {
+        $this->calculator->number(9)
+            ->operator('√');
+        $this->assertEquals(3, $this->calculator->execute());
+    }
+
+    public function testCalculatorSquareRootAlias()
+    {
+        $this->calculator->number(9)
+            ->operator('sqrt');
+        $this->assertEquals(3, $this->calculator->execute());
+    }
+
+    public function testCalculatorEmpty()
     {
         $this->assertEquals(0, $this->calculator->execute());
     }
@@ -67,5 +81,26 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
             ->operator('+')->number(3)
             ->execute();
         $this->assertEquals("1 + 1 * 3 + 3 = 7", (string) $this->calculator);
+    }
+
+    public function testEmptyToString()
+    {
+        $this->assertEquals("", (string) $this->calculator);
+    }
+
+    public function testToStringWithSquareRoot()
+    {
+        $this->calculator->number(9)
+            ->operator('√')
+            ->execute();
+        $this->assertEquals("√ 9 = 3", (string) $this->calculator);
+    }
+
+    public function testToStringWithSquareRootAlias()
+    {
+        $this->calculator->number(9)
+            ->operator('sqrt')
+            ->execute();
+        $this->assertEquals("√ 9 = 3", (string) $this->calculator);
     }
 }

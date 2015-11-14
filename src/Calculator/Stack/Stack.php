@@ -32,6 +32,22 @@ class Stack
     }
 
     /**
+     * @param mixed $item
+     */
+    public function prepend($item)
+    {
+        array_unshift($this->stack, $item);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function shift()
+    {
+        return array_shift($this->stack);
+    }
+
+    /**
      * @return int
      */
     public function count()
@@ -57,4 +73,5 @@ class Stack
         }
         return null;
     }
+
 } 

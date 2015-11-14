@@ -2,6 +2,8 @@
 namespace Calculator\Operator;
 
 
+use Calculator\Exception\DivisionByZeroException;
+
 class Divide extends Operator
 {
     /**
@@ -24,9 +26,13 @@ class Divide extends Operator
      * @param float|int $value1
      * @param float|int $value2
      * @return float|int
+     * @throws \Calculator\Exception\DivisionByZeroException
      */
     public function execute($value1, $value2)
     {
+        if ($value2 == 0) {
+            throw new DivisionByZeroException();
+        }
         return $value1 / $value2;
     }
 }

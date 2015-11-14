@@ -2,21 +2,21 @@
 namespace Calculator\Operator;
 
 
-class PowTest extends \PHPUnit_Framework_TestCase
+class SquareRootTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Pow
+     * @var SquareRoot
      */
     protected $operator;
 
     public function assertPreConditions()
     {
-        $this->operator = new Pow();
+        $this->operator = new SquareRoot();
     }
 
     public function testConstruct()
     {
-        $this->assertEquals('^', $this->operator->getOperator());
+        $this->assertEquals('√', $this->operator->getOperator());
     }
 
     public function testPrecedence()
@@ -26,12 +26,15 @@ class PowTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->assertEquals(8, $this->operator->execute(2, 3));
+        $this->assertEquals(3, $this->operator->execute(null, 9));
+        $this->assertEquals(3, $this->operator->execute(0, 9));
+        $this->assertEquals(3, $this->operator->execute(1000, 9));
+        $this->assertEquals(0, $this->operator->execute(0, 0));
     }
 
     public function testToString()
     {
-        $this->assertEquals("^", (string) $this->operator);
+        $this->assertEquals("√", (string) $this->operator);
     }
 
     public function testGetType()

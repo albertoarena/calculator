@@ -29,8 +29,19 @@ class DivideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $this->operator->execute(12, 3));
     }
 
+    public function testDivideByZero()
+    {
+        $this->setExpectedException('\Calculator\Exception\DivisionByZeroException', 'Division by zero');
+        $this->operator->execute(5, 0);
+    }
+
     public function testToString()
     {
         $this->assertEquals("/", (string) $this->operator);
+    }
+
+    public function testGetType()
+    {
+        $this->assertEquals('operator', $this->operator->getType());
     }
 } 

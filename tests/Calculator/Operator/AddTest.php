@@ -33,4 +33,9 @@ class AddTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals("+", (string) $this->operator);
     }
+
+    public function testGetType()
+    {
+        $this->assertEquals('operator', $this->operator->getType());
+    }
 } 

@@ -27,4 +27,9 @@ class NumberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('number', $this->number->getType());
     }
-} 
+
+    public function testGetStringOrder()
+    {
+        $this->assertEquals(1, $this->number->getStringOrder());
+    }
+}

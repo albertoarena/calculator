@@ -27,4 +27,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('result', $this->result->getType());
     }
-} 
+
+    public function testGetStringOrder()
+    {
+        $this->assertEquals(1, $this->result->getStringOrder());
+    }
+}

@@ -159,7 +159,12 @@ class Calculator
                 // swap with previous item
                 $v = $queue[$index - 1];
                 $queue[$index - 1] = $item;
-                $queue[$index] = $v;
+
+                if ($item->getStringBrackets()) {
+                    $queue[$index] = '(' . $v . ')';
+                } else {
+                    $queue[$index] = $v;
+                }
             }
         }
 

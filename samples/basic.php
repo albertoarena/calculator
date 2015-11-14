@@ -34,3 +34,10 @@ $result = $calculator->number(9)
 
 echo 'Result: ' . $result . $cr;
 echo 'Full operation: ' . $calculator . $cr;
+
+$result = $calculator->number(1)
+    ->operator('cos')
+    ->execute();
+
+echo 'Result: ' . $result . $cr;
+echo 'Full operation: ' . $calculator . $cr;

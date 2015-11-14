@@ -38,4 +38,9 @@ class PowTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('operator', $this->operator->getType());
     }
+
+    public function testGetStringOrder()
+    {
+        $this->assertEquals(1, $this->operator->getStringOrder());
+    }
 } 

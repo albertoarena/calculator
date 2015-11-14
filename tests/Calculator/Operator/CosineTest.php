@@ -2,21 +2,21 @@
 namespace Calculator\Operator;
 
 
-class MultiplyTest extends \PHPUnit_Framework_TestCase
+class CosineTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Multiply
+     * @var Sine
      */
     protected $operator;
 
     public function assertPreConditions()
     {
-        $this->operator = new Multiply();
+        $this->operator = new Cosine();
     }
 
     public function testConstruct()
     {
-        $this->assertEquals('*', $this->operator->getOperator());
+        $this->assertEquals('cos', $this->operator->getOperator());
     }
 
     public function testPrecedence()
@@ -26,12 +26,14 @@ class MultiplyTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->assertEquals(10, $this->operator->execute(5, 2));
+        $this->assertEquals(-1, $this->operator->execute(0, pi()));
+        $this->assertEquals(0, $this->operator->execute(0, pi() / 2));
+        $this->assertEquals(1, $this->operator->execute(0, 0));
     }
 
     public function testToString()
     {
-        $this->assertEquals("*", (string) $this->operator);
+        $this->assertEquals("cos", (string) $this->operator);
     }
 
     public function testGetType()
@@ -41,6 +43,6 @@ class MultiplyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStringOrder()
     {
-        $this->assertEquals(1, $this->operator->getStringOrder());
+        $this->assertEquals(-1, $this->operator->getStringOrder());
     }
 }

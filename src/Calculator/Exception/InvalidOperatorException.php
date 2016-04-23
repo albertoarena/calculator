@@ -3,7 +3,8 @@
 namespace Calculator\Exception;
 
 
-class InvalidOperatorException extends Exception {
+class InvalidOperatorException extends Exception
+{
 
     public function __construct($operator)
     {

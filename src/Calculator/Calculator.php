@@ -4,6 +4,7 @@ namespace Calculator;
 
 use Calculator\Number\Number;
 use Calculator\Number\Result;
+use Calculator\Operator\Negative;
 use Calculator\Operator\Operator;
 use Calculator\Stack\Stack;
 
@@ -16,6 +17,8 @@ use Calculator\Stack\Stack;
  */
 class Calculator
 {
+    const COMPACT_SPACE_MARKER = '$$$';
+
     /** @var \Calculator\Stack\Stack */
     protected $output;
 
@@ -126,6 +129,15 @@ class Calculator
     }
 
     /**
+     * @return $this
+     */
+    public function negative()
+    {
+        $this->process(new Negative(0));
+        return $this;
+    }
+
+    /**
      * Execute calculation
      * @return int|float
      */
@@ -165,10 +177,11 @@ class Calculator
                 } else {
                     $queue[$index] = $v;
                 }
+                $queue = array_merge(array_slice($queue, 0, $index), array(self::COMPACT_SPACE_MARKER), array_slice($queue, $index));
             }
         }
 
-        $ret = implode(' ', $queue);
+        $ret = str_replace(' ' . self::COMPACT_SPACE_MARKER . ' ', '', implode(' ', $queue));
         $this->queue->reset();
         return $ret;
     }

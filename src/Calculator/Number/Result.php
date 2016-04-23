@@ -17,6 +17,6 @@ class Result extends Number
      */
     public function __toString()
     {
-        return '= ' . (string) $this->value;
+        return '= ' . (string)$this->value;
     }
 } 

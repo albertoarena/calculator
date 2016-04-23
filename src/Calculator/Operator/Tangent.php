@@ -29,7 +29,7 @@ class Tangent extends Operator
     }
 
     /**
-     * @param float|int $value1  Unused
+     * @param float|int $value1 Unused
      * @param float|int $value2
      * @return float|int
      */

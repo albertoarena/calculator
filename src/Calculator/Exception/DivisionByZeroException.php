@@ -3,7 +3,8 @@
 namespace Calculator\Exception;
 
 
-class DivisionByZeroException extends Exception {
+class DivisionByZeroException extends Exception
+{
 
     public function __construct()
     {

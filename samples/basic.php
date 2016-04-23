@@ -28,6 +28,14 @@ $result = $calculator->number(2)
 echo 'Result: ' . $result . $cr;
 echo 'Full operation: ' . $calculator . $cr;
 
+$result = $calculator->number(2)
+    ->operator('*')->number(2)->negative()
+    ->operator('^')->number(4)
+    ->execute();
+
+echo 'Result: ' . $result . $cr;
+echo 'Full operation: ' . $calculator . $cr;
+
 $result = $calculator->number(9)
     ->operator('√')
     ->execute();

@@ -2,14 +2,14 @@
 namespace Calculator\Operator;
 
 
-class ArcCosine extends Operator
+class Negative extends Operator
 {
     /**
      * @return string
      */
     public function getOperator()
     {
-        return 'acos';
+        return '-';
     }
 
     /**
@@ -17,7 +17,7 @@ class ArcCosine extends Operator
      */
     public function getPrecedence()
     {
-        return self::PRECEDENCE_MEDIUM;
+        return self::PRECEDENCE_HIGH;
     }
 
     /**
@@ -35,14 +35,7 @@ class ArcCosine extends Operator
      */
     public function execute($value1, $value2)
     {
-        return acos($value2);
+        return $value2 * -1;
     }
 
-    /**
-     * @return bool
-     */
-    public function getStringBrackets()
-    {
-        return true;
-    }
 }

@@ -3,6 +3,7 @@ namespace Calculator\Number;
 
 
 use Calculator\Entity;
+use Calculator\Exception\InvalidNumberException;
 
 class Number extends Entity
 {
@@ -11,10 +12,15 @@ class Number extends Entity
 
     /**
      * @param float|int $value
+     * @throws \Calculator\Exception\InvalidNumberException
      */
     public function __construct($value)
     {
-        $this->value = $value;
+        if (is_int($value) || is_float($value)) {
+            $this->value = $value;
+        } else {
+            throw new InvalidNumberException($value);
+        }
     }
 
     /**
@@ -38,6 +44,6 @@ class Number extends Entity
      */
     public function __toString()
     {
-        return (string) $this->value;
+        return (string)$this->value;
     }
 }

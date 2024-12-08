@@ -1,67 +1,57 @@
 <?php
+
 namespace Calculator;
 
-
-use Calculator\Number\Number;
-use Calculator\Number\Result;
-use Calculator\Operator\Negative;
-use Calculator\Operator\Operator;
-use Calculator\Stack\Stack;
+use Calculator\Contracts\MathInterface;
+use Calculator\Exceptions\InvalidNumberException;
+use Calculator\Exceptions\InvalidOperatorException;
+use Calculator\Numbers\Number;
+use Calculator\Numbers\Result;
+use Calculator\Operators\Negative;
+use Calculator\Operators\Operator;
+use Calculator\Stacks\Stack;
 
 /**
  * Class Calculator
- * @package Calculator
- *
- * The logic is inspired by shunting-yard algorithm
- * http://en.wikipedia.org/wiki/Shunting-yard_algorithm
  */
 class Calculator
 {
-    const COMPACT_SPACE_MARKER = '$$$';
+    public const COMPACT_SPACE_MARKER = '$$$';
 
-    /** @var \Calculator\Stack\Stack */
-    protected $output;
+    protected Stack $output;
 
-    /** @var \Calculator\Stack\Stack */
-    protected $operators;
+    protected Stack $operators;
 
-    /** @var \Calculator\Stack\Stack */
-    protected $queue;
+    protected Stack $queue;
 
-    public function __construct()
-    {
-        $this->output = new Stack();
-        $this->operators = new Stack();
-        $this->queue = new Stack();
+    public function __construct(
+        readonly public int $precision = MathInterface::PRECISION,
+    ) {
+        $this->output = new Stack;
+        $this->operators = new Stack;
+        $this->queue = new Stack;
     }
 
-    /**
-     * @param Entity $item
-     */
-    protected function addToQueue($item)
+    protected function addToQueue(Number|Operator $item): void
     {
-        if ($item instanceof Entity) {
-            $this->queue->push($item);
-        }
+        $this->queue->push($item);
     }
 
-    /**
-     * @return Entity|null
-     */
-    protected function getNextValue()
+    protected function getNextValue(): Entity|int|float|null
     {
-        if ($this->output->current() !== null) {
+        if (null !== $this->output->current()) {
             return $this->output->pop()->getValue();
         }
+
         return null;
     }
 
     /**
      * Process stack
      *
-     * @param Entity $item
+     * @throws InvalidNumberException
      */
-    protected function process($item)
+    protected function process(Number|Operator $item): void
     {
         $this->addToQueue($item);
         if ($item instanceof Operator) {
@@ -69,35 +59,30 @@ class Calculator
             // Get the latest operator in stack
             $lastInStack = $this->operators->current();
 
-            if (!is_null($lastInStack)) {
-
+            if (! is_null($lastInStack)) {
                 // Check precedence
-                if ($item->getPrecedence() > $lastInStack->getPrecedence()) {
-                    // Push current operator
-                    $this->operators->push($item);
-                } else {
+                if ($item->getPrecedence() <= $lastInStack->getPrecedence()) {
                     // Process latest operator in stack
                     $value2 = $this->getNextValue();
                     $value1 = $this->getNextValue();
+                    // Push current operator
                     $this->output->push(new Number($lastInStack->execute($value1, $value2)));
                     // Pop last operator
                     $this->operators->pop();
-                    // Push current operator
-                    $this->operators->push($item);
                 }
-            } else {
-                // Empty stack, push current operator
-                $this->operators->push($item);
             }
-        } else if ($item instanceof Number) {
+            $this->operators->push($item);
+        } else {
             $this->output->push($item);
         }
     }
 
     /**
      * Finalise process of stack
+     *
+     * @throws InvalidNumberException
      */
-    protected function finaliseProcess()
+    protected function finaliseProcess(): void
     {
         // Reduce operators in stack
         while ($this->operators->count()) {
@@ -109,39 +94,42 @@ class Calculator
     }
 
     /**
-     * @param string $operator
-     * @return $this
+     * @throws InvalidOperatorException
+     * @throws InvalidNumberException
      */
-    public function operator($operator)
+    public function operator(string $operator): static
     {
         $this->process(OperatorFactory::createOperator($operator));
+
         return $this;
     }
 
     /**
-     * @param int|float $number
-     * @return $this
+     * @throws InvalidNumberException
      */
-    public function number($number)
+    public function number(float|int $number): static
     {
         $this->process(new Number($number));
+
         return $this;
     }
 
     /**
-     * @return $this
+     * @throws InvalidNumberException
      */
-    public function negative()
+    public function negative(): static
     {
-        $this->process(new Negative(0));
+        $this->process(new Negative);
+
         return $this;
     }
 
     /**
      * Execute calculation
-     * @return int|float
+     *
+     * @throws InvalidNumberException
      */
-    public function execute()
+    public function execute(): float|int
     {
         $this->finaliseProcess();
 
@@ -150,39 +138,41 @@ class Calculator
             $result = $this->output->pop()->getValue();
 
             // Total added to queue
-            $this->queue->push(new Result($result));
+            $this->queue->push(new Result(value: $result, precision: $this->precision));
         }
 
         return $result;
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         // Normalise operators with inverted string order
-        $queue = array();
+        $queue = [];
         while ($this->queue->count()) {
             $item = $this->queue->shift();
             $queue[] = $item;
             $index = count($queue) - 1;
-            if (is_object($item) && $item->getStringOrder() < 0 && $index > 0) {
+            if ($item->getStringOrder() < 0 && $index > 0) {
                 // swap with previous item
                 $v = $queue[$index - 1];
                 $queue[$index - 1] = $item;
 
                 if ($item->getStringBrackets()) {
-                    $queue[$index] = '(' . $v . ')';
+                    $queue[$index] = "($v)";
                 } else {
                     $queue[$index] = $v;
                 }
-                $queue = array_merge(array_slice($queue, 0, $index), array(self::COMPACT_SPACE_MARKER), array_slice($queue, $index));
+                $queue = array_merge(
+                    array_slice($queue, 0, $index),
+                    [self::COMPACT_SPACE_MARKER],
+                    array_slice($queue, $index)
+                );
             }
         }
 
-        $ret = str_replace(' ' . self::COMPACT_SPACE_MARKER . ' ', '', implode(' ', $queue));
+        $ret = str_replace(' '.self::COMPACT_SPACE_MARKER.' ', '', implode(' ', $queue));
         $this->queue->reset();
+
         return $ret;
     }
 }

@@ -4,18 +4,58 @@
     "license": "MIT",
     "authors": [
         {
+            "role": "Developer",
             "name": "Alberto Arena",
-            "email": "arena.alberto@gmail.com"
+            "email": "arena.alberto@gmail.com",
+            "homepage": "https://albertoarena.it/"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": ">=5.3.0",
-        "crysalead/kahlan": "^2.4"
-    },
     "autoload": {
         "psr-0": {
             "Calculator": "src/"
         }
-    }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "jaschilz/php-coverage-badger": "^2.0",
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "dev-main",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "11.5.x-dev"
+    },
+    "scripts": {
+        "test": "@php ./vendor/bin/phpunit --testdox tests",
+        "fix": "@php ./vendor/bin/pint",
+        "check": "@php ./vendor/bin/pint --test -v",
+        "static": "@php ./vendor/bin/phpstan analyse",
+        "all": [
+            "@test",
+            "@fix",
+            "@check",
+            "@static"
+        ],
+        "test-coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "@php ./vendor/bin/phpunit --coverage-html reports/ --coverage-clover clover.xml --process-isolation tests",
+            "@php ./vendor/bin/php-coverage-badger clover.xml coverage.svg"
+        ],
+        "test-badge": [
+            "@php -dxdebug.mode=coverage ./vendor/bin/phpunit --coverage-clover clover.xml --process-isolation tests",
+            "@php vendor/bin/php-coverage-badger clover.xml coverage.svg"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

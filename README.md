@@ -1,23 +1,30 @@
-Calculator
-===
+# Calculator
+
+![build-test](coverage.svg)
 
 Simple PHP calculator, inspired by [shunting-yard algorithm](http://en.wikipedia.org/wiki/Shunting-yard_algorithm).
 
-Support of basic operators (+, -, /, \*, ^), trigonometric operators and precedence.
+It supports basic operators (+, -, /, \*, ^), trigonometric operators and precedence.
 
-Operators
----
+## Compatibility
 
-The Order of operators follows the standard (see [Wikipedia](https://en.wikipedia.org/wiki/Order_of_operations#Definition)):
+| What                                                                        | Version         |
+|-----------------------------------------------------------------------------|-----------------|
+| PHP                                                                         | 8.2             |
+
+
+## Operators
+
+Operator precedence follows the standard (see [Wikipedia](https://en.wikipedia.org/wiki/Order_of_operations#Definition)):
 
 High precedence
 
-- `^`: exponent (power)
+- `^`: exponent (power) (alias `**`)
 - `√`: square root (alias `sqrt`)
 
 Medium precedence
 
-- `\*`: multiplication
+- `*`: multiplication
 - `/`: division
 - `sin`: sine
 - `cos`: cosine
@@ -31,8 +38,7 @@ Low precedence
 - `+`: addition
 - `-`: subtraction
 
-How to use it
----
+## How to use it
 
 A working example is available in `samples/basic.php`.
 

@@ -9,6 +9,7 @@ use Calculator\Operators\ArcSine;
 use Calculator\Operators\ArcTangent;
 use Calculator\Operators\Cosine;
 use Calculator\Operators\Divide;
+use Calculator\Operators\Fibonacci;
 use Calculator\Operators\Multiply;
 use Calculator\Operators\Pow;
 use Calculator\Operators\Sine;
@@ -33,6 +34,7 @@ class OperatorFactory
         'asin' => ArcSine::class,
         'acos' => ArcCosine::class,
         'atan' => ArcTangent::class,
+        '!' => Fibonacci::class,
     ];
 
     /**

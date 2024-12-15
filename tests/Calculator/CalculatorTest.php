@@ -382,4 +382,19 @@ class CalculatorTest extends TestCase
             (string) $calculator
         );
     }
+
+    /**
+     * @throws InvalidOperatorException
+     * @throws InvalidNumberException
+     */
+    #[Test]
+    public function it_can_calculate_fibonacci_number()
+    {
+        $calculator = new Calculator;
+        $calculator->number(40)
+            ->operator('!')
+            ->execute();
+
+        $this->assertEquals('40! = 102334155', (string) $calculator);
+    }
 }

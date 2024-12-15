@@ -100,6 +100,7 @@ class NumberTest extends TestCase
     public function it_cannot_create_a_number_with_an_invalid_type()
     {
         $this->expectException(TypeError::class);
+        // @phpstan-ignore argument.type
         new Number((object) 1.23);
     }
 }

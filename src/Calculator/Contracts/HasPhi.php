@@ -1,0 +1,17 @@
+<?php
+
+namespace Calculator\Contracts;
+
+trait HasPhi
+{
+    protected static ?float $phi = null;
+
+    protected function getPhi(): float
+    {
+        if (null === self::$phi) {
+            self::$phi = (1 + sqrt(5)) / 2;
+        }
+
+        return self::$phi;
+    }
+}

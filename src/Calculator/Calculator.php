@@ -171,6 +171,10 @@ class Calculator
         }
 
         $ret = str_replace(' '.self::COMPACT_SPACE_MARKER.' ', '', implode(' ', $queue));
+
+        // Handle Fibonacci number
+        $ret = str_replace(' ! ', '! ', $ret);
+
         $this->queue->reset();
 
         return $ret;

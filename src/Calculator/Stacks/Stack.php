@@ -7,7 +7,7 @@ use Calculator\Operators\Operator;
 
 class Stack
 {
-    /** @var Number|Operator[] */
+    /** @var Number[]|Operator[] */
     protected array $stack;
 
     public function __construct()

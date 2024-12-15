@@ -11,6 +11,7 @@ use Calculator\Operators\Cosine;
 use Calculator\Operators\Divide;
 use Calculator\Operators\Fibonacci;
 use Calculator\Operators\Multiply;
+use Calculator\Operators\Percentage;
 use Calculator\Operators\Pow;
 use Calculator\Operators\Sine;
 use Calculator\Operators\SquareRoot;
@@ -35,6 +36,7 @@ class OperatorFactory
         'acos' => ArcCosine::class,
         'atan' => ArcTangent::class,
         '!' => Fibonacci::class,
+        '%' => Percentage::class,
     ];
 
     /**

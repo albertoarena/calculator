@@ -397,4 +397,19 @@ class CalculatorTest extends TestCase
 
         $this->assertEquals('40! = 102334155', (string) $calculator);
     }
+
+    /**
+     * @throws InvalidOperatorException
+     * @throws InvalidNumberException
+     */
+    #[Test]
+    public function it_can_calculate_percentage()
+    {
+        $calculator = new Calculator;
+        $calculator->number(40.32)
+            ->operator('%')
+            ->execute();
+
+        $this->assertEquals('40.32% = 0.4032', (string) $calculator);
+    }
 }

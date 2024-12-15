@@ -2,7 +2,7 @@
 
 namespace Calculator\Operators;
 
-use Calculator\Contracts\HasPhi;
+use Calculator\Concerns\HasPhi;
 use Calculator\Exceptions\InvalidNumberException;
 
 class Fibonacci extends Operator

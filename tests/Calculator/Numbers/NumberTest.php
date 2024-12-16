@@ -2,6 +2,7 @@
 
 namespace Tests\Calculator\Numbers;
 
+use Calculator\Concerns\HasPhi;
 use Calculator\Exceptions\InvalidNumberException;
 use Calculator\Numbers\Number;
 use PHPUnit\Framework\Attributes\Test;
@@ -11,11 +12,13 @@ use TypeError;
 
 class NumberTest extends TestCase
 {
+    use HasPhi;
+
     /**
      * @throws InvalidNumberException
      */
     #[Test]
-    public function it_can_create_a_valid_number()
+    public function it_can_create_a_number()
     {
         $testValues = [
             new TestValue(0, '0'),
@@ -58,7 +61,7 @@ class NumberTest extends TestCase
      * @throws InvalidNumberException
      */
     #[Test]
-    public function it_can_create_a_valid_number_with_custom_precision()
+    public function it_can_create_a_number_with_custom_precision()
     {
         $testValues = [
             new TestValue(0.0000000001, '1.0E-10'), // Rendered as 1.0E-10
@@ -79,6 +82,62 @@ class NumberTest extends TestCase
         foreach ($testValues as $value) {
             $number = new Number($value->value, precision: 10);
             $this->assertEquals($value->value, $number->getValue());
+            $this->assertEquals('number', $number->getType());
+            $this->assertEquals($value->expected, (string) $number);
+            $this->assertEquals(1, $number->getStringOrder());
+            $this->assertFalse($number->getStringBrackets());
+        }
+    }
+
+    /**
+     * @throws InvalidNumberException
+     */
+    #[Test]
+    public function it_can_create_a_number_with_math_constants()
+    {
+        $testValues = [
+            new TestValue('pi', 'pi', M_PI),
+            new TestValue('PI', 'pi', M_PI),
+            new TestValue('π', 'pi', M_PI),
+            new TestValue('e', 'e', M_E),
+            new TestValue('E', 'e', M_E),
+            new TestValue('phi', 'phi', self::getPhi()),
+            new TestValue('PHI', 'phi', self::getPhi()),
+            new TestValue('φ', 'phi', self::getPhi()),
+        ];
+
+        /** @var TestValue $value */
+        foreach ($testValues as $value) {
+            $number = new Number($value->value);
+            $this->assertEquals($value->expectedValue, $number->getValue());
+            $this->assertEquals('number', $number->getType());
+            $this->assertEquals($value->expected, (string) $number);
+            $this->assertEquals(1, $number->getStringOrder());
+            $this->assertFalse($number->getStringBrackets());
+        }
+    }
+
+    /**
+     * @throws InvalidNumberException
+     */
+    #[Test]
+    public function it_can_create_a_number_with_math_constants_and_greek_letters()
+    {
+        $testValues = [
+            new TestValue('pi', 'π', M_PI),
+            new TestValue('PI', 'π', M_PI),
+            new TestValue('π', 'π', M_PI),
+            new TestValue('e', 'e', M_E),
+            new TestValue('E', 'e', M_E),
+            new TestValue('phi', 'φ', self::getPhi()),
+            new TestValue('PHI', 'φ', self::getPhi()),
+            new TestValue('φ', 'φ', self::getPhi()),
+        ];
+
+        /** @var TestValue $value */
+        foreach ($testValues as $value) {
+            $number = new Number($value->value, greekLetters: true);
+            $this->assertEquals($value->expectedValue, $number->getValue());
             $this->assertEquals('number', $number->getType());
             $this->assertEquals($value->expected, (string) $number);
             $this->assertEquals(1, $number->getStringOrder());

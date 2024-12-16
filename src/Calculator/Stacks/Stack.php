@@ -2,12 +2,13 @@
 
 namespace Calculator\Stacks;
 
+use Calculator\Numbers\Group;
 use Calculator\Numbers\Number;
 use Calculator\Operators\Operator;
 
 class Stack
 {
-    /** @var Number[]|Operator[] */
+    /** @var Number[]|Operator[]|Group[] */
     protected array $stack;
 
     public function __construct()
@@ -15,22 +16,22 @@ class Stack
         $this->stack = [];
     }
 
-    public function push(Number|Operator $item): void
+    public function push(Number|Operator|Group $item): void
     {
         $this->stack[] = $item;
     }
 
-    public function pop(): Number|Operator
+    public function pop(): Number|Operator|Group
     {
         return array_pop($this->stack);
     }
 
-    public function prepend(Number|Operator $item): void
+    public function prepend(Number|Operator|Group $item): void
     {
         array_unshift($this->stack, $item);
     }
 
-    public function shift(): Number|Operator
+    public function shift(): Number|Operator|Group
     {
         return array_shift($this->stack);
     }
@@ -45,7 +46,7 @@ class Stack
         $this->stack = [];
     }
 
-    public function current(): Number|Operator|null
+    public function current(): Number|Operator|Group|null
     {
         if ($c = count($this->stack)) {
             return $this->stack[$c - 1];

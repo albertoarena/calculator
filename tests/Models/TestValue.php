@@ -6,6 +6,8 @@ readonly class TestValue
 {
     public function __construct(
         public int|float|string $value,
-        public string $expected,
+        public ?string $expected = null,
+        public int|float $expectedValue = 0,
+        public ?string $expectedClass = null,
     ) {}
 }

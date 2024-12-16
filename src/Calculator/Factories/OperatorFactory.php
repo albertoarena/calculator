@@ -1,6 +1,6 @@
 <?php
 
-namespace Calculator;
+namespace Calculator\Factories;
 
 use Calculator\Exceptions\InvalidOperatorException;
 use Calculator\Operators\Add;
@@ -11,6 +11,7 @@ use Calculator\Operators\Cosine;
 use Calculator\Operators\Divide;
 use Calculator\Operators\Fibonacci;
 use Calculator\Operators\Multiply;
+use Calculator\Operators\Operator;
 use Calculator\Operators\Percentage;
 use Calculator\Operators\Pow;
 use Calculator\Operators\Sine;
@@ -42,7 +43,7 @@ class OperatorFactory
     /**
      * @throws InvalidOperatorException
      */
-    public static function createOperator($operator)
+    public static function createOperator(string $operator): Operator
     {
         if (array_key_exists($operator, self::$operators)) {
             return new self::$operators[$operator];

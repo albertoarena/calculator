@@ -6,23 +6,34 @@ use Calculator\Contracts\MathInterface;
 use Calculator\Contracts\NumberInterface;
 use Calculator\Entity;
 use Calculator\Exceptions\InvalidNumberException;
+use Calculator\Factories\MathConstantFactory;
 
 class Number extends Entity implements NumberInterface
 {
     protected int|float $value;
+
+    protected ?MathConstant $mathConstant;
 
     /**
      * @throws InvalidNumberException
      */
     public function __construct(
         int|float|string $value,
-        readonly public int $precision = MathInterface::PRECISION,
+        protected int $precision = MathInterface::PRECISION,
+        protected bool $greekLetters = false,
     ) {
-        $value = $this->toNumeric($value);
-        if (is_numeric($value)) {
-            $this->value = $value;
+        // Check if math constant
+        $this->mathConstant = MathConstantFactory::getAsConstant($value, greekLetters: $greekLetters);
+        if ($this->mathConstant) {
+            $this->value = $this->mathConstant->value;
         } else {
-            throw new InvalidNumberException($value);
+            // Decode numeric, if possible
+            $value = $this->toNumeric($value);
+            if (is_numeric($value)) {
+                $this->value = $value;
+            } else {
+                throw new InvalidNumberException($value);
+            }
         }
     }
 
@@ -61,6 +72,6 @@ class Number extends Entity implements NumberInterface
 
     public function __toString()
     {
-        return (string) $this->round();
+        return $this->mathConstant->constant ?? (string) $this->round();
     }
 }

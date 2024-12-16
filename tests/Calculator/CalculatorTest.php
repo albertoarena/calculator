@@ -243,7 +243,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_using_basic_operators()
     {
         $calculator = new Calculator;
-        $calculator->number(1)
+        $calculator
+            ->number(1)
             ->operator('+')->number(1)
             ->operator('*')->number(3)
             ->operator('+')->number(3)
@@ -262,7 +263,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_with_number_only()
     {
         $calculator = new Calculator;
-        $calculator->number(7)
+        $calculator
+            ->number(7)
             ->execute();
 
         $this->assertEquals(
@@ -279,7 +281,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_using_negative_operators()
     {
         $calculator = new Calculator;
-        $calculator->number(2)
+        $calculator
+            ->number(2)
             ->operator('+')->number(1)
             ->operator('*')->number(3)->negative()
             ->operator('+')->number(5)
@@ -299,7 +302,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_using_square_root()
     {
         $calculator = new Calculator;
-        $calculator->number(9)
+        $calculator
+            ->number(9)
             ->operator('√')
             ->execute();
 
@@ -317,7 +321,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_using_square_root_alias()
     {
         $calculator = new Calculator;
-        $calculator->number(9)
+        $calculator
+            ->number(9)
             ->operator('sqrt')
             ->execute();
 
@@ -335,7 +340,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_and_convert_to_string_using_trigonometric_operators()
     {
         $calculator = new Calculator;
-        $calculator->number(1)->operator('sin')
+        $result = $calculator
+            ->number(1)->operator('sin')
             ->operator('+')
             ->number(1)->operator('cos')
             ->operator('+')
@@ -348,6 +354,7 @@ class CalculatorTest extends TestCase
             ->number(1)->operator('atan')
             ->execute();
 
+        $this->assertEqualsWithDelta(0.78539816339745, $result, 0.0000000001);
         $this->assertEquals(MathInterface::PRECISION, $calculator->precision);
         $this->assertEquals(
             'sin(1) + cos(1) + tan(1) + asin(1) + acos(1) + atan(1) = 0.7853981633974',
@@ -362,8 +369,9 @@ class CalculatorTest extends TestCase
     #[Test]
     public function it_can_calculate_and_convert_to_string_using_trigonometric_operators_and_custom_precision()
     {
-        $calculator = new Calculator(precision: 11);
-        $calculator->number(1)->operator('sin')
+        $calculator = new Calculator(precision: 6);
+        $result = $calculator
+            ->number(1)->operator('sin')
             ->operator('+')
             ->number(1)->operator('cos')
             ->operator('+')
@@ -376,9 +384,10 @@ class CalculatorTest extends TestCase
             ->number(1)->operator('atan')
             ->execute();
 
-        $this->assertEquals(11, $calculator->precision);
+        $this->assertEqualsWithDelta(0.78539816339745, $result, 0.0000000001);
+        $this->assertEquals(6, $calculator->precision);
         $this->assertEquals(
-            'sin(1) + cos(1) + tan(1) + asin(1) + acos(1) + atan(1) = 0.7853981634',
+            'sin(1) + cos(1) + tan(1) + asin(1) + acos(1) + atan(1) = 0.785398',
             (string) $calculator
         );
     }
@@ -391,7 +400,8 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_fibonacci_number()
     {
         $calculator = new Calculator;
-        $calculator->number(40)
+        $calculator
+            ->number(40)
             ->operator('!')
             ->execute();
 
@@ -406,10 +416,113 @@ class CalculatorTest extends TestCase
     public function it_can_calculate_percentage()
     {
         $calculator = new Calculator;
-        $calculator->number(40.32)
+        $calculator
+            ->number(40.32)
             ->operator('%')
             ->execute();
 
         $this->assertEquals('40.32% = 0.4032', (string) $calculator);
+    }
+
+    /**
+     * @throws InvalidNumberException
+     * @throws InvalidOperatorException
+     */
+    #[Test]
+    public function it_can_calculate_using_math_constants()
+    {
+        $calculator = new Calculator;
+
+        $calculator
+            ->group(function (Calculator $calculator) {
+                $calculator
+                    ->number('pi')
+                    ->operator('/')->number(4);
+            })
+            ->operator('cos')
+            ->execute();
+
+        $this->assertEquals(
+            'cos(pi / 4) = 0.7071067811865',
+            (string) $calculator
+        );
+    }
+
+    /**
+     * @throws InvalidNumberException
+     * @throws InvalidOperatorException
+     */
+    #[Test]
+    public function it_can_calculate_using_math_constants_and_greek_letters()
+    {
+        $calculator = new Calculator(
+            greekLetters: true
+        );
+
+        $calculator
+            ->group(function (Calculator $calculator) {
+                $calculator
+                    ->number('pi')
+                    ->operator('/')->number(4);
+            })
+            ->operator('cos')
+            ->execute();
+
+        $this->assertEquals(
+            'cos(π / 4) = 0.7071067811865',
+            (string) $calculator
+        );
+    }
+
+    /**
+     * @throws InvalidNumberException
+     * @throws InvalidOperatorException
+     */
+    #[Test]
+    public function it_can_calculate_using_math_constants_with_custom_precision()
+    {
+        $calculator = new Calculator(precision: 5);
+
+        $calculator
+            ->group(function (Calculator $calculator) {
+                $calculator
+                    ->number('π')
+                    ->operator('/')->number(4);
+            })
+            ->operator('cos')
+            ->execute();
+
+        $this->assertEquals(
+            'cos(pi / 4) = 0.70711',
+            (string) $calculator
+        );
+    }
+
+    /**
+     * @throws InvalidNumberException
+     * @throws InvalidOperatorException
+     */
+    #[Test]
+    public function it_can_calculate_using_grouped_operations_and_math_constants()
+    {
+        $calculator = new Calculator;
+
+        $calculator
+            ->group(function (Calculator $calculator) {
+                $calculator
+                    ->number('pi')
+                    ->operator('/')->group(function (Calculator $calculator) {
+                        $calculator
+                            ->number(8)
+                            ->operator('/')->number(2);
+                    });
+            })
+            ->operator('cos')
+            ->execute();
+
+        $this->assertEquals(
+            'cos(pi / (8 / 2)) = 0.7071067811865',
+            (string) $calculator
+        );
     }
 }

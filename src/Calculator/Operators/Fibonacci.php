@@ -37,6 +37,6 @@ class Fibonacci extends Operator
         }
 
         // Computation by rounding, see https://en.wikipedia.org/wiki/Fibonacci_sequence#Computation_by_rounding
-        return round(pow($this->getPhi(), $value2) / sqrt(5));
+        return round(pow(self::getPhi(), $value2) / sqrt(5));
     }
 }

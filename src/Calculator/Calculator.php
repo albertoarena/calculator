@@ -5,11 +5,14 @@ namespace Calculator;
 use Calculator\Contracts\MathInterface;
 use Calculator\Exceptions\InvalidNumberException;
 use Calculator\Exceptions\InvalidOperatorException;
+use Calculator\Factories\OperatorFactory;
+use Calculator\Numbers\Group;
 use Calculator\Numbers\Number;
 use Calculator\Numbers\Result;
 use Calculator\Operators\Negative;
 use Calculator\Operators\Operator;
 use Calculator\Stacks\Stack;
+use Closure;
 
 /**
  * Class Calculator
@@ -26,17 +29,22 @@ class Calculator
 
     public function __construct(
         readonly public int $precision = MathInterface::PRECISION,
+        readonly public bool $resultInString = true,
+        public bool $greekLetters = false,
     ) {
         $this->output = new Stack;
         $this->operators = new Stack;
         $this->queue = new Stack;
     }
 
-    protected function addToQueue(Number|Operator $item): void
+    protected function addToQueue(Number|Operator|Group $item): void
     {
         $this->queue->push($item);
     }
 
+    /**
+     * @throws InvalidNumberException
+     */
     protected function getNextValue(): Entity|int|float|null
     {
         if (null !== $this->output->current()) {
@@ -51,7 +59,7 @@ class Calculator
      *
      * @throws InvalidNumberException
      */
-    protected function process(Number|Operator $item): void
+    protected function process(Number|Operator|Group $item): void
     {
         $this->addToQueue($item);
         if ($item instanceof Operator) {
@@ -107,9 +115,9 @@ class Calculator
     /**
      * @throws InvalidNumberException
      */
-    public function number(float|int $number): static
+    public function number(int|float|string $number): static
     {
-        $this->process(new Number($number));
+        $this->process(new Number($number, precision: $this->precision, greekLetters: $this->greekLetters));
 
         return $this;
     }
@@ -120,6 +128,20 @@ class Calculator
     public function negative(): static
     {
         $this->process(new Negative);
+
+        return $this;
+    }
+
+    /**
+     * @throws InvalidNumberException
+     */
+    public function group(Closure $closure): static
+    {
+        $this->process(new Group(
+            closure: $closure,
+            precision: $this->precision,
+            greekLetters: $this->greekLetters
+        ));
 
         return $this;
     }
@@ -170,9 +192,19 @@ class Calculator
             }
         }
 
+        if (! $this->resultInString) {
+            $queue = array_filter($queue, function ($item) {
+                return ! $item instanceof Result;
+            });
+        }
+
+        // Normalise spaces
         $ret = str_replace(' '.self::COMPACT_SPACE_MARKER.' ', '', implode(' ', $queue));
 
-        // Handle Fibonacci number and percentage
+        // Normalise double parentheses
+        $ret = str_replace(['((', '))'], ['(', ')'], $ret);
+
+        // Normalise Fibonacci number and percentage
         $ret = str_replace([' ! ', ' % '], ['! ', '% '], $ret);
 
         $this->queue->reset();

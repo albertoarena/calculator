@@ -12,6 +12,7 @@ use Calculator\Numbers\Result;
 use Calculator\Operators\Negative;
 use Calculator\Operators\Operator;
 use Calculator\Stacks\Stack;
+use Calculator\Transformers\QueueToStringTransformer;
 use Closure;
 
 /**
@@ -168,47 +169,9 @@ class Calculator
 
     public function __toString()
     {
-        // Normalise operators with inverted string order
-        $queue = [];
-        while ($this->queue->count()) {
-            $item = $this->queue->shift();
-            $queue[] = $item;
-            $index = count($queue) - 1;
-            if ($item->getStringOrder() < 0 && $index > 0) {
-                // swap with previous item
-                $v = $queue[$index - 1];
-                $queue[$index - 1] = $item;
-
-                if ($item->getStringBrackets()) {
-                    $queue[$index] = "($v)";
-                } else {
-                    $queue[$index] = $v;
-                }
-                $queue = array_merge(
-                    array_slice($queue, 0, $index),
-                    [self::COMPACT_SPACE_MARKER],
-                    array_slice($queue, $index)
-                );
-            }
-        }
-
-        if (! $this->resultInString) {
-            $queue = array_filter($queue, function ($item) {
-                return ! $item instanceof Result;
-            });
-        }
-
-        // Normalise spaces
-        $ret = str_replace(' '.self::COMPACT_SPACE_MARKER.' ', '', implode(' ', $queue));
-
-        // Normalise double parentheses
-        $ret = str_replace(['((', '))'], ['(', ')'], $ret);
-
-        // Normalise Fibonacci number and percentage
-        $ret = str_replace([' ! ', ' % '], ['! ', '% '], $ret);
-
-        $this->queue->reset();
-
-        return $ret;
+        return QueueToStringTransformer::transform(
+            $this->queue,
+            $this->resultInString
+        );
     }
 }

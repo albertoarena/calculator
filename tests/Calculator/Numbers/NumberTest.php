@@ -30,8 +30,8 @@ class NumberTest extends TestCase
             new TestValue(4.56, '4.56'),
             new TestValue(-456, '-456'),
             new TestValue(-4.56, '-4.56'),
-            new TestValue(M_E, '2.718281828459'),
-            new TestValue(M_PI, '3.1415926535898'),
+            new TestValue(M_E, (string) round(M_E, 13)),
+            new TestValue(M_PI, (string) round(M_PI, 13)),
             new TestValue('0', '0'),
             new TestValue('0.0', '0'),
             new TestValue('0.0000000000001', '1.0E-13'), // Rendered as 1.0E-13
@@ -42,8 +42,8 @@ class NumberTest extends TestCase
             new TestValue('4.56', '4.56'),
             new TestValue('-456', '-456'),
             new TestValue('-4.56', '-4.56'),
-            new TestValue((string) M_E, '2.718281828459'),
-            new TestValue((string) M_PI, '3.1415926535898'),
+            new TestValue((string) M_E, (string) round(M_E, 13)),
+            new TestValue((string) M_PI, (string) round(M_PI, 13)),
         ];
 
         /** @var TestValue $value */
@@ -68,14 +68,14 @@ class NumberTest extends TestCase
             new TestValue(0.00000000000001, '0'), // Rendered as 0 --> it exceeds precision 11
             new TestValue(1.0E-10, '1.0E-10'),
             new TestValue(1.0E-14, '0'), // Rendered as 0 --> it exceeds precision 11
-            new TestValue(M_E, '2.7182818285'),
-            new TestValue(M_PI, '3.1415926536'),
+            new TestValue(M_E, (string) round(M_E, 10)),
+            new TestValue(M_PI, (string) round(M_PI, 10)),
             new TestValue('0.0000000001', '1.0E-10'), // Rendered as 1.0E-10
             new TestValue('0.00000000000001', '0'), // Rendered as 0 --> it exceeds precision 11
             new TestValue('1.0E-10', '1.0E-10'),
             new TestValue('1.0E-14', '0'), // Rendered as 0 --> it exceeds precision 11
-            new TestValue((string) M_E, '2.7182818285'),
-            new TestValue((string) M_PI, '3.1415926536'),
+            new TestValue((string) M_E, (string) round(M_E, 10)),
+            new TestValue((string) M_PI, (string) round(M_PI, 10)),
         ];
 
         /** @var TestValue $value */

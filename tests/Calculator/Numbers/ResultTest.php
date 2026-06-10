@@ -17,6 +17,10 @@ class ResultTest extends TestCase
     #[Test]
     public function it_can_create_a_valid_result()
     {
+        // PHP 8.4 changed (string)float to shortest round-trip-exact repr.
+        $expectedE = PHP_VERSION_ID >= 80400 ? '2.718281828459' : '2.7182818284591';
+        $expectedPi = '3.1415926535898';
+
         $testValues = [
             new TestValue(0, '0'),
             new TestValue(0.0, '0'),
@@ -27,8 +31,8 @@ class ResultTest extends TestCase
             new TestValue(4.56, '4.56'),
             new TestValue(-456, '-456'),
             new TestValue(-4.56, '-4.56'),
-            new TestValue(M_E, (string) round(M_E, 13)),
-            new TestValue(M_PI, (string) round(M_PI, 13)),
+            new TestValue(M_E, $expectedE),
+            new TestValue(M_PI, $expectedPi),
             new TestValue('0', '0'),
             new TestValue('0.0', '0'),
             new TestValue('0.0000000000001', '1.0E-13'), // Rendered as 1.0E-13
@@ -39,8 +43,8 @@ class ResultTest extends TestCase
             new TestValue('4.56', '4.56'),
             new TestValue('-456', '-456'),
             new TestValue('-4.56', '-4.56'),
-            new TestValue((string) M_E, (string) round(M_E, 13)),
-            new TestValue((string) M_PI, (string) round(M_PI, 13)),
+            new TestValue((string) M_E, $expectedE),
+            new TestValue((string) M_PI, $expectedPi),
         ];
 
         /** @var TestValue $testValue */

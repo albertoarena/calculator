@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": "^8.3"
+        "php": "^8.4"
     },
     "require-dev": {
         "jaschilz/php-coverage-badger": "^2.0",

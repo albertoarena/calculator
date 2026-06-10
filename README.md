@@ -10,7 +10,7 @@ It supports basic operators (+, -, /, \*, ^), trigonometric operators and preced
 
 | What | Version |
 |------|---------|
-| PHP  | 8.2     |
+| PHP  | 8.4     |
 
 
 ## Operators

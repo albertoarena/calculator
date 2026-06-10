@@ -2,7 +2,7 @@
 
 namespace Calculator\Enums;
 
-enum AngleMeasureEnum: String
+enum AngleMeasureEnum: string
 {
     case Radians = 'radians';
     case Degrees = 'degrees';

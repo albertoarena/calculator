@@ -29,8 +29,8 @@ class Calculator
     protected Stack $queue;
 
     public function __construct(
-        readonly public int $precision = MathInterface::PRECISION,
-        readonly public bool $resultInString = true,
+        public readonly int $precision = MathInterface::PRECISION,
+        public readonly bool $resultInString = true,
         public bool $greekLetters = false,
     ) {
         $this->output = new Stack;

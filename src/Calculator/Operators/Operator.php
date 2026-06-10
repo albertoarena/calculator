@@ -9,7 +9,7 @@ use Calculator\Entity;
 abstract class Operator extends Entity implements OperatorInterface
 {
     public function __construct(
-        readonly public int $precision = MathInterface::PRECISION,
+        public readonly int $precision = MathInterface::PRECISION,
     ) {}
 
     public function getType(): string

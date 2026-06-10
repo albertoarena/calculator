@@ -23,4 +23,11 @@
             <directory>src</directory>
         </include>
     </source>
+
+    <!-- Pin float-to-string formatting so (string)float is deterministic across
+         PHP 8.3 / 8.4 runners (PHP 8.4 changed the default behavior). -->
+    <php>
+        <ini name="precision" value="-1"/>
+        <ini name="serialize_precision" value="-1"/>
+    </php>
 </phpunit>

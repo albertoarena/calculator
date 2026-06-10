@@ -20,8 +20,7 @@ class NumberTest extends TestCase
     #[Test]
     public function it_can_create_a_number()
     {
-        // PHP 8.4 changed (string)float to shortest round-trip-exact repr.
-        $expectedE = PHP_VERSION_ID >= 80400 ? '2.718281828459' : '2.7182818284591';
+        $expectedE = '2.718281828459';
         $expectedPi = '3.1415926535898';
 
         $testValues = [

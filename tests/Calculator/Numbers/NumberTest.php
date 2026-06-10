@@ -30,7 +30,7 @@ class NumberTest extends TestCase
             new TestValue(4.56, '4.56'),
             new TestValue(-456, '-456'),
             new TestValue(-4.56, '-4.56'),
-            new TestValue(M_E, '2.7182818284591'),
+            new TestValue(M_E, '2.718281828459'),
             new TestValue(M_PI, '3.1415926535898'),
             new TestValue('0', '0'),
             new TestValue('0.0', '0'),
@@ -42,7 +42,7 @@ class NumberTest extends TestCase
             new TestValue('4.56', '4.56'),
             new TestValue('-456', '-456'),
             new TestValue('-4.56', '-4.56'),
-            new TestValue((string) M_E, '2.718281828459'), // Note: this is different compared to float M_E
+            new TestValue((string) M_E, '2.718281828459'),
             new TestValue((string) M_PI, '3.1415926535898'),
         ];
 

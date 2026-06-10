@@ -48,7 +48,11 @@ class MathConstantFactory
         float|int|string $value,
         bool $greekLetters = false
     ): ?MathConstant {
-        $value = is_string($value) ? strtolower($value) : $value;
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $value = strtolower($value);
 
         if (array_key_exists($value, self::$constants)) {
             return new MathConstant(
